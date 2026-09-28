@@ -17,27 +17,30 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # Actions are pinned to full commit SHAs so a moved tag can't change what runs
       - name: Check-out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
 
+      # --ignore-scripts: dependency install scripts never run in CI
       - name: Install project
-        run: npm install
+        run: npm install --ignore-scripts --no-audit --no-fund
 
       - name: Build project
         run: npm run build
 
-      # keep_files leaves the other pages on gh-pages in place;
-      # cname rewrites the CNAME file so the custom domain survives every deploy
+      # gh-pages is replaced with exactly the build output on every deploy, so anything
+      # not produced by the build (e.g. injected pages) is removed; cname keeps the domain
       - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
-          keep_files: true
           cname: murtazazoaib.com
