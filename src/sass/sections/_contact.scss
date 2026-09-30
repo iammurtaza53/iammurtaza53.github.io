@@ -35,5 +35,27 @@
         font-size: 2rem;
       }
     }
+
+    // A second row under the Email button: a heading and a row of repository buttons.
+    &--projects {
+      margin-top: 6rem;
+    }
+
+    &__title {
+      margin: 0 0 2.5rem;
+      font-size: 2.8rem;
+      font-weight: bold;
+
+      @include respond(phone) {
+        font-size: 2.2rem;
+      }
+    }
+
+    &__links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.6rem;
+    }
   }
 }
