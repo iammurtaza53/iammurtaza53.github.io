@@ -35,6 +35,11 @@ jobs:
       - name: Build project
         run: npm run build
 
+      # robots.txt and the sitemaps live at the domain root, so they ship with this site;
+      # the project pages (/hostlatch/, /dev-agent-autopilot/) are served by their own repos
+      - name: Add root files
+        run: cp -R static/. dist/
+
       # gh-pages is replaced with exactly the build output on every deploy, so anything
       # not produced by the build (e.g. injected pages) is removed; cname keeps the domain
       - name: Deploy to gh-pages
